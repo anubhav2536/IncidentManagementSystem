@@ -16,7 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
 
     private static final String[] PUBLIC_MATCHERS = { "/api/users/login", "/api/users/forgot-password",
-            "/api/users/**", "/api/incidents/**" };
+            "/api/users/**", "/api/incidents/**" ,"/h2-console/**"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -36,4 +36,6 @@ public class WebSecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
+
+
 }

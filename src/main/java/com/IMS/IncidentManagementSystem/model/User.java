@@ -4,18 +4,14 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
+@Table(name = "\"user\"")
 public class User {
 
 	@Id
@@ -36,23 +32,6 @@ public class User {
 	@NotNull
 	@Size(min = 6, max = 100)
 	private String password;
-
-	@NotNull
-	@Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$", message = "Phone number is invalid")
-	private String phoneNumber;
-
-	@NotNull
-	@Size(min = 10, max = 100)
-	private String address;
-
-	@NotNull
-	@Pattern(regexp = "^\\d{5,6}$", message = "Pin code is invalid")
-	private String pinCode;
-
-	private String city;
-
-	private String country;
-
 	@JsonManagedReference
 	@OneToMany(mappedBy = "user")
 	private Set<Incident> incidents;
@@ -89,45 +68,17 @@ public class User {
 		this.password = password;
 	}
 
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
 
-	public String getAddress() {
-		return address;
-	}
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
 
-	public String getPinCode() {
-		return pinCode;
-	}
 
-	public void setPinCode(String pinCode) {
-		this.pinCode = pinCode;
-	}
 
-	public String getCity() {
-		return city;
-	}
 
-	public void setCity(String city) {
-		this.city = city;
-	}
 
-	public String getCountry() {
-		return country;
-	}
 
-	public void setCountry(String country) {
-		this.country = country;
-	}
+
+
 
 	public Set<Incident> getIncidents() {
 		return incidents;

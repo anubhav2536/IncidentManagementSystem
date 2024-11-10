@@ -1,30 +1,38 @@
 package com.IMS.IncidentManagementSystem.Controllers;
 
+import com.IMS.IncidentManagementSystem.Service.EmailService;
+import com.IMS.IncidentManagementSystem.Service.UserService;
+import com.IMS.IncidentManagementSystem.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.IMS.IncidentManagementSystem.Service.IncidentService;
 import com.IMS.IncidentManagementSystem.model.Incident;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api/incidents")
 public class IncidentController {
 
     @Autowired
     private IncidentService incidentService;
-
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private EmailService emailService;
     @PostMapping
-    public ResponseEntity<Incident> createIncident(@RequestBody Incident incident, @RequestParam Long userId) {
-        return ResponseEntity.ok(incidentService.createIncident(incident, userId));
+    public ResponseEntity<Incident> createIncident(@RequestBody Incident incident, @RequestParam String userName) {
+
+       User user = userService.getUserByUserName(userName);
+        //System.out.println(user.getUserName());
+        emailService.sendIncidentNotification(
+                "tomaranubhav02@gmail.com", // Change this to the recipient's email
+                incident.getTitle(),
+                incident.getDescription()
+        );
+
+        return ResponseEntity.ok(incidentService.createIncident(incident, user.getId()));
     }
 
     @GetMapping("/{id}")

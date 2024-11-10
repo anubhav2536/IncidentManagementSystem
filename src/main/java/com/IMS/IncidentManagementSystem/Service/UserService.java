@@ -1,11 +1,14 @@
 package com.IMS.IncidentManagementSystem.Service;
 
+import com.IMS.IncidentManagementSystem.model.Incident;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.IMS.IncidentManagementSystem.Repository.UserRepository;
 import com.IMS.IncidentManagementSystem.model.User;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -17,6 +20,7 @@ public class UserService {
 
     public User authenticateUser(String userName, String password) {
         User user = userRepository.findByUserName(userName);
+       // System.out.println(user.toString());
         if (user != null && passwordEncoder.matches(password, user.getPassword())) {
             return user;
         } else {
@@ -34,9 +38,13 @@ public class UserService {
         }
     }
 
-    public User createUser(User user) {
+    public String createUser(User user) {
+        if(userRepository.findByEmail(user.getEmail())!=null){
+            return "user already exits";
+        }
         user.setPassword(this.passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        userRepository.save(user);
+        return "User registered successfully!";
     }
 
     public User getUserById(Long id) {
@@ -49,5 +57,8 @@ public class UserService {
 
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+    public Set<Incident> getIncidents(String userName){
+        return userRepository.findByUserName(userName).getIncidents();
     }
 }

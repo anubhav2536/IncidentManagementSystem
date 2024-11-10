@@ -1,20 +1,19 @@
 package com.IMS.IncidentManagementSystem.Controllers;
 
+import com.IMS.IncidentManagementSystem.model.Incident;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.IMS.IncidentManagementSystem.Service.UserService;
 import com.IMS.IncidentManagementSystem.model.ForgotPasswordRequest;
 import com.IMS.IncidentManagementSystem.model.LoginRequest;
 import com.IMS.IncidentManagementSystem.model.User;
+import java.util.List;
+import java.util.Set;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api/users")
 public class UserController {
     @Autowired
@@ -22,12 +21,20 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody LoginRequest loginRequest) {
+        System.out.println("react is trying");
+       // System.out.println(loginRequest.getUserName()+" "+loginRequest.getPassword());
         try {
             User user = userService.authenticateUser(loginRequest.getUserName(), loginRequest.getPassword());
+           // System.out.println("react is trying +1");
             return ResponseEntity.ok(user);
         } catch (RuntimeException e) {
+            //System.out.println(e);
             return ResponseEntity.badRequest().body(null); // Adjust as needed for your error handling
         }
+    }
+    @GetMapping("/getAllIncidents/{userName}")
+    public Set<Incident> getAllIncidents(@PathVariable String userName){
+        return userService.getIncidents(userName);
     }
 
     @PostMapping("/forgot-password")
@@ -41,7 +48,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public User createUser(@RequestBody User user) {
+    public String createUser(@RequestBody User user) {
         return userService.createUser(user);
     }
 

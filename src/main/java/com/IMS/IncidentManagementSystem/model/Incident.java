@@ -26,12 +26,12 @@ public class Incident {
     @Column(unique = true)
     private String incidentId;
 
-    @NotNull
-    private String type; // "Enterprise" or "Government"
+   // @NotNull
+    private String title; // "Enterprise" or "Government"
 
-    @NotNull
+   // @NotNull
     @Size(min = 10, max = 500)
-    private String details;
+    private String description;
 
     private LocalDateTime reportedDateTime;
 
@@ -63,19 +63,19 @@ public class Incident {
     }
 
     public String getType() {
-        return type;
+        return title;
     }
 
     public void setType(String type) {
-        this.type = type;
+        this.title = type;
     }
 
     public String getDetails() {
-        return details;
+        return description;
     }
 
     public void setDetails(String details) {
-        this.details = details;
+        this.description = details;
     }
 
     public LocalDateTime getReportedDateTime() {
@@ -110,4 +110,19 @@ public class Incident {
         this.user = user;
     }
 
+    public @Size(min = 10, max = 500) String getDescription() {
+        return description;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setDescription(@Size(min = 10, max = 500) String description) {
+        this.description = description;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }
