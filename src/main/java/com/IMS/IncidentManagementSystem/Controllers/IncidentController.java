@@ -27,7 +27,7 @@ public class IncidentController {
        User user = userService.getUserByUserName(userName);
         //System.out.println(user.getUserName());
         emailService.sendIncidentNotification(
-                "tomaranubhav02@gmail.com", // Change this to the recipient's email
+                "example@gmail.com", // Change this to the recipient's email
                 incident.getTitle(),
                 incident.getDescription()
         );
